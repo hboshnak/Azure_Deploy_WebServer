@@ -59,6 +59,12 @@ In order to support application deployment, we'll need to create an image that d
 - modify the provisioners according the requirements
 - ensure the resource group names 
 in Packer and Terraform  are the same
+- assign the proper values to environment variables
+- under the **packer** subdirectory build the image by running:
+
+```bash
+packer build server.json
+```
 
 
 ### Output
