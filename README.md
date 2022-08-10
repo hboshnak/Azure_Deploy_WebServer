@@ -1,51 +1,54 @@
 # Azure Infrastructure Operations Project: Deploying a scalable IaaS web server in Azure
 
-### Introduction
+## Introduction
 
 For this project, we will use a Packer template and a Terraform template to deploy a customizable, scalable web server in Azure.
 
 The original starter template of this project lives at this [repository](https://github.com/udacity/nd082-Azure-Cloud-DevOps-Starter-Code)
 
-### Getting Started
+## Getting Started
 1. Clone or make a fresh copy of this repository, so you can tweak'n'squeeze it.
 
 2. Follow the instructions
 
 3. Enjoy your new magical abilities
 
-### Dependencies
+## Dependencies
 1. Create an [Azure Account](https://portal.azure.com) 
 2. Install the [Azure command line interface](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 3. Install [Packer](https://www.packer.io/downloads)
 4. Install [Terraform](https://www.terraform.io/downloads.html)
 
-### Instructions
-0. Login into Azure CLI using your Azure credentials
+## Instructions
 
-    '''sh
-    az login
-    '''
-1. Deploy a Policy
+### 0. Login into Azure CLI using your Azure credentials
 
-    1.1 Create a custom tagging policy definition based on the json configurations:
+```bash
+az login
+```
 
-    Navigate to **policy** subdirectory
+### 1. Deploy a Policy
 
-    """sh
-        az policy definition create --name "TaggingPolicyDef" --description "Deny all not idexed resources" --display-name "Deny if not taggd" --mode "Indexed" --rules ./tag_policy_rules.json
-    """
+#### 1.1 Create a custom tagging policy definition based on the json configurations:
 
-    1.2 Create a policy assignment:
+Navigate to **policy** subdirectory
 
-    """sh
-        az policy assignment create --name "TaggingPolicy" --policy "TaggingPolicyDef" --display-name "Assignment of policy Deny if not tagged" --description "Assignment of denying non tagged indexed resources"
-    """
+```bash
+az policy definition create --name "TaggingPolicyDef" --description "Deny all not idexed resources" --display-name "Deny if not taggd" --mode "Indexed" --rules ./tag_policy_rules.json
+```
 
-    1.3 Verify the creation of the policy
+#### 1.2 Create a policy assignment:
 
-    """
-    az policy assignment list
-    """
+```bash
+az policy assignment create --name "TaggingPolicy" --policy "TaggingPolicyDef" --display-name "Assignment of policy Deny if not tagged" --description "Assignment of denying non tagged indexed resources"
+```
+
+
+#### 1.3 Verify the creation of the policy
+
+```bash
+az policy assignment list
+```
 ### Output
 **TODO**
 
