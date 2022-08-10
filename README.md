@@ -49,6 +49,18 @@ az policy assignment create --name "TaggingPolicy" --policy "TaggingPolicyDef" -
 ```bash
 az policy assignment list
 ```
+
+### 2. Packer image template
+In order to support application deployment, we'll need to create an image that different organizations can take advantage of to deploy their own apps! To do this, we'll create a packer image that anyone can use, and we'll leverage in our own Terraform template.
+
+#### 2.1 Create a Server Image
+- use the template provided
+- use Ubuntu 18.04-LTS as a base image
+- modify the provisioners according the requirements
+- ensure the resource group names 
+in Packer and Terraform  are the same
+
+
 ### Output
 **TODO**
 
