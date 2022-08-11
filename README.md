@@ -66,6 +66,49 @@ in Packer and Terraform  are the same
 packer build server.json
 ```
 
+- verify the newly created image by running:
+
+```bash
+az image list
+```
+
+### 3. Terraform template
+
+#### 3.0 Environment variables
+-Depending on your OS of choise you may need to export your env variables, e.g.:
+
+
+```bash
+export CLIENT_ID="<your_secret_id>"
+```
+etc.
+
+#### 3.1 Import a resorce group:
+```bash
+terraform import azurerm_resource_group.main /subscriptions/{subsriptionId}/resourceGroups/{resourceGroupName}
+```
+
+#### 3.2 Initialize Terraform
+```bast
+terraform init
+```
+
+#### 3.3 Review the solution that is up to be deployed
+```bash
+terraform plan -out solution.plan
+```
+
+#### 3.4 Build and deploy the solution
+```bash
+terraform apply solution.plan
+```
+
+#### 3.5 Destroy the infrastructure
+The main important thing after deploying is destroying.
+Make sure that all your unused resources are destroyed before going to sleep.
+```bash
+terraform destroy
+```
 
 ### Output
 **TODO**
