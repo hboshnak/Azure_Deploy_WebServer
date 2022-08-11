@@ -109,7 +109,3 @@ Make sure that all your unused resources are destroyed before going to sleep.
 ```bash
 terraform destroy
 ```
-
-### Output
-**TODO**
-
