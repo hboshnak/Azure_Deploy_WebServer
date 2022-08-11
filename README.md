@@ -83,6 +83,8 @@ export CLIENT_ID="<your_secret_id>"
 ```
 etc.
 
+You may also like to check ```terraform\vars.tf``` file and place your settings accordingly.
+
 #### 3.1 Import a resorce group:
 ```bash
 terraform import azurerm_resource_group.main /subscriptions/{subsriptionId}/resourceGroups/{resourceGroupName}
