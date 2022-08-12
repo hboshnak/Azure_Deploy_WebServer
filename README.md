@@ -116,3 +116,9 @@ Make sure that all your unused resources are destroyed before going to sleep.
 ```bash
 terraform destroy
 ```
+
+## Outputs
+Please check ```docs/output-n-screenshots``` folder, where you can find example console outputs
+received after executing the various commands.
+
+## Be blessed
