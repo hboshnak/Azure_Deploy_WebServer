@@ -1,6 +1,6 @@
 variable "prefix" {
     description = "This prefix will be used for all resources"
-    default     = "Prj1"
+    default     = "Prm1"
 }
 
 variable "location" {
@@ -10,13 +10,13 @@ variable "location" {
 
 variable "password" {
     description = "The Azure  resource password"
-    default = "azureadmin" 
+    default = "Pa55w0rd!" 
     sensitive = true
 }
 
 variable "username" {
     description = "The Azure username"
-    default     = "Pa55w0rd!" 
+    default     = "azureuser" 
     sensitive   = true
 }
 
