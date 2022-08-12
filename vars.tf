@@ -1,14 +1,6 @@
 variable "prefix" {
     description = "This prefix will be used for all resources"
-    default     = "Azuredevops"
-}
-
-variable "tags" {
-    description = "Map of the tags to use for the deployed resources"
-    type        = map(string)
-    default = {
-        Name = "udacity-azure-webserver"
-  }
+    default     = "Prj1"
 }
 
 variable "location" {
@@ -16,26 +8,40 @@ variable "location" {
     default = "East US" 
 }
 
-
 variable "password" {
     description = "The Azure  resource password"
-    default = "yourPass" 
+    default = "azureadmin" 
     sensitive = true
 }
 
 variable "username" {
     description = "The Azure username"
-    default     = "yourName" 
+    default     = "Pa55w0rd!" 
     sensitive   = true
 }
 
-variable "num_vms" {
+variable "number_of_virtual_machines" {
     type        =  number
     description = "Number of Vitual machines"
+    default = 2
 }
 
+variable "tenant_id" {
+    description = "Udacity Lab tenant ID"
+    default = "f958e84a-92b8-439f-a62d-4f45996b6d07"
+}
 
-variable "num_managed_disks" {
-    type        = number
-    description = "Number of Managed disks"
+variable "client_id" {  
+    description = "Udacity Lab App ID"
+    default = "8c50ed4e-4700-4237-81a3-05d0fbf54bf7"
+}
+
+variable "client_secret" {  
+    description = "Azure secret id"
+    default = "R8C8Q~qy7jNnAejXx5X8NsuBrCxWdqEPYY4f1bqo"
+}
+
+variable "subscription_id" {  
+    description = "Azure subscription id"
+    default = "e2c7cd99-c3c5-4a90-9109-02e7d50f8311"
 }
