@@ -1,0 +1,5 @@
+{
+    "client_id": "Fill-your-client-or-azure-app-id",
+    "client_secret": "Fill-your-client-or-azure-secret",
+    "subscription_id": "Fill-your-subscription_id"
+  }
