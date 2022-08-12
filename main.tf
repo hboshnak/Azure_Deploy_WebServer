@@ -6,7 +6,7 @@ provider "azurerm" {
     tenant_id       = "${var.tenant_id}"
 }
 
-resource "azurerm_resource_group" "main" {
+data "azurerm_resource_group" "main" {
     name     = "Azuredevops"
 }
 
@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "main" {
     location                = azurerm_resource_group.main.location
     resource_group_name     = azurerm_resource_group.main.name
     tags = {
-        "tagName" = "webserver"
+        "project": "udacityP1"
     }
 }
 
