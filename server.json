@@ -2,30 +2,25 @@
     "variables": {
         "subscription_id": "{{env `SUBSCRIPTION_ID`}}",
         "client_id": "{{env `CLIENT_ID`}}",
-        "client_secret": "{{env `CLIENT_SECRET`}}",
-        "tenant_id": "{{env `TENANT_ID`}}",
-        "azure-resource-group": "packer-rg",
-        "vm_size": "Standard_D2s_v3",
-        "azure-region": "centralus"
+        "client_secret": "{{env `CLIENT_SECRET`}}"
     },
     "builders": [
         {
         "type": "azure-arm",
-        "subscription_id": "{{user `subscription_id`}}",
-        "client_id": "{{user `client_id`}}",
-        "client_secret": "{{user `client_secret`}}",
-        "tenant_id": "{{user `tenant-id`}}",
         "os_type": "Linux",
         "image_publisher": "Canonical",
         "image_offer": "UbuntuServer",
         "image_sku": "18.04-LTS",
-        "managed_image_resource_group_name": "{{user `azure-resource-group`}}",
-        "managed_image_name": "ubuntuImage",
-        "location": "{{user `azure-region`}}",
-        "vm_size": "{{user `vm-size`}}",
+        "build_resource_group_name": "Azuredevops",
+        "managed_image_resource_group_name": "Azuredevops",
+        "managed_image_name": "ubuntuP1Image",
+        "vm_size": "Standard_D2s_v3",
         "azure_tags": {
             "project": "udacityP1"
-            }
+            },
+        "client_id": "{{user `client_id`}}",
+        "client_secret": "{{user `client_secret`}}",
+        "subscription_id": "{{user `subscription_id`}}"
         }
     ],
     "provisioners": [
