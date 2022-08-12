@@ -31,10 +31,10 @@ az login
 
 #### 1.1 Create a custom tagging policy definition based on the json configurations:
 
-Navigate to **policy** subdirectory
+Check-out the ```policy.rules.json``` file
 
 ```bash
-az policy definition create --name "TaggingPolicyDef" --description "Deny all not idexed resources" --display-name "Deny if not taggd" --mode "Indexed" --rules ./tag_policy_rules.json
+az policy definition create --name "TaggingPolicyDef" --description "Deny all not idexed resources" --display-name "Deny if not taggd" --mode "Indexed" --rules ./policy.rules.json
 ```
 
 #### 1.2 Create a policy assignment:
@@ -54,16 +54,19 @@ az policy assignment list
 In order to support application deployment, we'll need to create an image that different organizations can take advantage of to deploy their own apps! To do this, we'll create a packer image that anyone can use, and we'll leverage in our own Terraform template.
 
 #### 2.1 Create a Server Image
+
+Things we need to do here are:
 - use the template provided
 - use Ubuntu 18.04-LTS as a base image
 - modify the provisioners according the requirements
 - ensure the resource group names 
 in Packer and Terraform  are the same
 - assign the proper values to environment variables
-- under the **packer** subdirectory build the image by running:
+
+**Make sure that you place the right values at the:** ```packer.vars.json```
 
 ```bash
-packer build server.json
+packer build -var-file=packer.vars.json server.json
 ```
 
 - verify the newly created image by running:
@@ -74,23 +77,24 @@ az image list
 
 ### 3. Terraform template
 
-#### 3.0 Environment variables
--Depending on your OS of choise you may need to export your env variables, e.g.:
+#### 3.0 Terraform variables
+
+**Check-out the ```vars.tf``` file!**
+
+There you may need to fill-out with the right values:
+
+- prefix
+- client ID
+- client secret
+- subscription ID
+- tenant ID
+- username ( for the VMs)
+- password ( for the VMs)
+- VM's number
+- location
 
 
-```bash
-export CLIENT_ID="<your_secret_id>"
-```
-etc.
-
-You may also like to check ```terraform\vars.tf``` file and place your settings accordingly.
-
-#### 3.1 Import a resorce group:
-```bash
-terraform import azurerm_resource_group.main /subscriptions/{subsriptionId}/resourceGroups/{resourceGroupName}
-```
-
-#### 3.2 Initialize Terraform
+#### 3.1 Initialize Terraform
 ```bast
 terraform init
 ```
