@@ -9,7 +9,7 @@ variable "location" {
 }
 
 variable "password" {
-    description = "The Azure  resource password"
+    description = "The Azure resource password"
     default = "Pa55w0rd!" 
     sensitive = true
 }
@@ -27,21 +27,21 @@ variable "number_of_virtual_machines" {
 }
 
 variable "tenant_id" {
-    description = "Udacity Lab tenant ID"
-    default = "f958e84a-92b8-439f-a62d-4f45996b6d07"
+    description = "Tenant ID"
+    default = "TODO-U-FILL-IT"
 }
 
 variable "client_id" {  
-    description = "Udacity Lab App ID"
-    default = "8c50ed4e-4700-4237-81a3-05d0fbf54bf7"
+    description = "Client ID"
+    default = "TODO-U-FILL-IT"
 }
 
 variable "client_secret" {  
-    description = "Azure secret id"
-    default = "R8C8Q~qy7jNnAejXx5X8NsuBrCxWdqEPYY4f1bqo"
+    description = "Client secret id"
+    default = "TODO-U-FILL-IT"
 }
 
 variable "subscription_id" {  
     description = "Azure subscription id"
-    default = "e2c7cd99-c3c5-4a90-9109-02e7d50f8311"
+    default = "TODO-U-FILL-IT"
 }
