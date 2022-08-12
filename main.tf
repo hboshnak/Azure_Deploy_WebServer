@@ -15,8 +15,8 @@ data "azurerm_resource_group" "main" {
 resource "azurerm_virtual_network" "main" {
     name                    = "${var.prefix}-network"
     address_space           = ["10.0.0.0/22"]
-    location                = azurerm_resource_group.main.location
-    resource_group_name     = azurerm_resource_group.main.name
+    location                = data.azurerm_resource_group.main.location
+    resource_group_name     = data.azurerm_resource_group.main.name
     tags = {
         project: "udacityP1"
     }
@@ -24,7 +24,7 @@ resource "azurerm_virtual_network" "main" {
 
 // Internal subnet for the upper vnet
 resource "azurerm_subnet" "internal" {
-    name                    = "${var.prefix}-internal"
+    name                    = "internal"
     resource_group_name     = data.azurerm_resource_group.main.name
     virtual_network_name    = azurerm_virtual_network.main.name
     address_prefixes        = ["10.0.2.0/24"]
@@ -33,8 +33,8 @@ resource "azurerm_subnet" "internal" {
 // Network security group
 resource "azurerm_network_security_group" "main" {
     name                    = "${var.prefix}-security-group"
-    location                = azurerm_resource_group.main.location
-    resource_group_name     = azurerm_resource_group.main.name
+    location                = data.azurerm_resource_group.main.location
+    resource_group_name     = data.azurerm_resource_group.main.name
     tags = {
         project: "udacityP1"
     }
@@ -87,97 +87,100 @@ resource "azurerm_network_interface" "main" {
     }  
 }
 
+// Public IP
 resource "azurerm_public_ip" "main" {
-    name                = "${var.prefix}_public_ip"
-    location            = azurerm_resource_group.main.location
-    resource_group_name = azurerm_resource_group.main.name
+    name                = "${var.prefix}-public-ip"
+    location            = data.azurerm_resource_group.main.location
+    resource_group_name = data.azurerm_resource_group.main.name
     allocation_method   = "Dynamic"
-
+    sku                 = "Basic" 
     tags = {
-        "tagName" = "webserver"
+        project: "udacityP1"
     }
 }
 
-
+// Load balancer
 resource "azurerm_lb" "main" {
-    name                = "${var.prefix}_Load_Balancer"
-    location            = "East US"
-    resource_group_name = azurerm_resource_group.main.name
+    name                = "${var.prefix}-load-balancer"
+    location            = data.azurerm_resource_group.main.location
+    resource_group_name = data.azurerm_resource_group.main.name
 
     frontend_ip_configuration {
-        name                 = "PublicIPAddress"
+        name                 = "${var.prefix}-load-balancer-frontend"
         public_ip_address_id = azurerm_public_ip.main.id
     }
 
     tags = {
-        "tagName" = "webserver"
+        project: "udacityP1"
     }
 }
 
-
+// Load balancer backend address pool
 resource "azurerm_lb_backend_address_pool" "main" {
     loadbalancer_id = azurerm_lb.main.id
-    name            = "${var.prefix}_BackEnd_AddressPool"
+    name            = "backend-adress-pool"
 }
 
-
+// Load balancer backend network address pool association
 resource "azurerm_network_interface_backend_address_pool_association" "main" {
-    network_interface_id    = azurerm_network_interface.main.id
-    ip_configuration_name   = "${var.prefix}_ip_configuration"
+    count                   = var.number_of_virtual_machines
+    network_interface_id    = element(azurerm_network_interface.main.*.id, count.index)
+    ip_configuration_name   = "internal"
     backend_address_pool_id = azurerm_lb_backend_address_pool.main.id
-    }
+}
 
+// VM availability set
 resource "azurerm_availability_set" "main" {
     name                = "${var.prefix}-availability-set"
-    location            = azurerm_resource_group.main.location
-    resource_group_name = azurerm_resource_group.main.name
+    location            = data.azurerm_resource_group.main.location
+    resource_group_name = data.azurerm_resource_group.main.name
 
     tags = {
-        "tagName" = "webserver"
-        }
+        project: "udacityP1"
     }
+}
 
+// Creation of virtual machines
+data "azurerm_image" "main" {
+    name            = "ubuntuP1Image"
+    resource_group_name = data.azurerm_resource_group.main.name
+}
 
 resource "azurerm_linux_virtual_machine" "main" {
-    count                           = var.num_vms                          # Number of VMs to be created       
-    name                            = "${var.prefix}-VM-00-${count.index}" # Tracks  count for different vm creation
-    resource_group_name             = azurerm_resource_group.main.name
-    location                        = azurerm_resource_group.main.location
+    count                           = var.number_of_virtual_machines                          # Number of VMs to be created       
+    name                            = "${var.prefix}-vm${count.index}" # Tracks  count for different vm creation
+    resource_group_name             = data.azurerm_resource_group.main.name
+    location                        = data.azurerm_resource_group.main.location
     size                            = "Standard_D2s_v3"
-    admin_username                  = var.username
-    admin_password                  = var.password
+    admin_username                  = "${var.username}"
+    admin_password                  = "${var.password}"
     disable_password_authentication = false
-    network_interface_ids = [azurerm_network_interface.main.id]
-
+    availability_set_id             = azurerm_availability_set.main.id
+    network_interface_ids = [element(azurerm_network_interface.main.*.id, count.index),]
 
     os_disk {
         storage_account_type = "Standard_LRS"
         caching              = "ReadWrite"
     }
 
-    source_image_reference {
-        publisher = "Canonical"
-        offer     = "UbuntuServer"
-        sku       = "18.04-LTS"
-        version   = "latest"
+    tags = {
+        project: "udacityP1"
     }
 
-    tags = {
-        "tagName" = "webserver"
-    }
+    source_image_id = data.azurerm_image.main.id
 }
 
-
+// Managed disks creation
 resource "azurerm_managed_disk" "main" {
-    count                = var.num_managed_disks
+    count                = var.number_of_virtual_machines
     name                 = "${var.prefix}-managed-disk-00-${count.index}"
-    location             = azurerm_resource_group.main.location
-    resource_group_name  = azurerm_resource_group.main.name
+    location             = data.azurerm_resource_group.main.location
+    resource_group_name  = data.azurerm_resource_group.main.name
     storage_account_type = "Standard_LRS"
     create_option        = "Empty"
     disk_size_gb         = "1"
 
     tags = {
-        "tagName" = "webserver"
+        project: "udacityP1"
     }
 }
