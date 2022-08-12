@@ -16,60 +16,68 @@ resource "azurerm_virtual_network" "main" {
     location                = azurerm_resource_group.main.location
     resource_group_name     = azurerm_resource_group.main.name
     tags = {
-        "project": "udacityP1"
+        project: "udacityP1"
     }
 }
 
+// Virtual network
 resource "azurerm_network_interface" "main" {
-    name                    = "${var.prefix}-NIC"
-    resource_group_name     = azurerm_resource_group.main.name
-    location                = azurerm_resource_group.main.location
-
-    ip_configuration {
-        name                          = "${var.prefix}_ip_configuration"
-        subnet_id                     = azurerm_subnet.main.id
-        private_ip_address_allocation = "Dynamic"
-    }
-
+    name                    = "${var.prefix}-network"
+    address_space       = ["10.0.0.0/22"]
+    location            = data.azurerm_resource_group.main.location
+    resource_group_name = data.azurerm_resource_group.main.name  
     tags = {
-        "tagName" = "webserver"
+        project: "udacityP1"
     }
 }
 
-resource "azurerm_subnet" "main" {
-    name                    = "${var.prefix}-subnet"
-    resource_group_name     = azurerm_resource_group.main.name
+// Internal subnet for the upper vnet
+resource "azurerm_subnet" "internal" {
+    name                    = "${var.prefix}-internal"
+    resource_group_name     = data.azurerm_resource_group.main.name
     virtual_network_name    = azurerm_virtual_network.main.name
     address_prefixes        = ["10.0.2.0/24"]
 }
 
-resource "azurerm_subnet_network_security_group_association" "main" {
-    subnet_id                 = azurerm_subnet.main.id
-    network_security_group_id = azurerm_network_security_group.main.id
-}
-
+// Network security group
 resource "azurerm_network_security_group" "main" {
-    name                    = "${var.prefix}-SecurityGroup"
+    name                    = "${var.prefix}-security-group"
     location                = azurerm_resource_group.main.location
     resource_group_name     = azurerm_resource_group.main.name
-
-    security_rule {
-        name                        = "${var.prefix}-DenyAllTraffic-ntk-sec-rule"
-        priority                    = 1000
-        direction                   = "Inbound"
-        access                      = "Deny"
-        protocol                    = "*"
-        source_port_range           = "*"
-        destination_port_range      = "*"
-        source_address_prefix       = "*"
-        description                 = "Deny All traffic"
-        destination_address_prefix  = "*"
-        }
-
     tags = {
-        "tagName" = "webserver"
-        }
+        project: "udacityP1"
+    }
+}
 
+// Allow only acces to VMs on the same subnet
+resource "azurerm_network_security_rule" "rule1" {
+    name                       = "inboundAccessSSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "10.0.0.0/24"
+    destination_address_prefix = "*"
+    description                = "description-ssh"
+    resource_group_name         = data.azurerm_resource_group.main.name
+    network_security_group_name = azurerm_network_security_group.main.name
+}
+
+// Deny all access from the internet
+resource "azurerm_network_security_rule" "rule2" {
+    name                       = "DenyAllInbound"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "10.0.0.0/24"  
+    resource_group_name         = data.azurerm_resource_group.main.name
+    network_security_group_name = azurerm_network_security_group.main.name
 }
 
 resource "azurerm_public_ip" "main" {
