@@ -1,0 +1,412 @@
+huba@DESKTOP-1PSGD3C:/mnt/d/dev/devops/course1lab1/repository/Azure_Deploy_WebServer$ terraform show
+# azurerm_availability_set.main:
+resource "azurerm_availability_set" "main" {
+    id                           = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/availabilitySets/Prm1-availability-set"
+    location                     = "southcentralus"
+    managed                      = true
+    name                         = "Prm1-availability-set"
+    platform_fault_domain_count  = 3
+    platform_update_domain_count = 5
+    resource_group_name          = "Azuredevops"
+    tags                         = {
+        "project" = "udacityP1"
+    }
+}
+
+# azurerm_lb.main:
+resource "azurerm_lb" "main" {
+    id                   = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer"
+    location             = "southcentralus"
+    name                 = "Prm1-load-balancer"
+    private_ip_addresses = []
+    resource_group_name  = "Azuredevops"
+    sku                  = "Basic"
+    sku_tier             = "Regional"
+    tags                 = {
+        "project" = "udacityP1"
+    }
+
+    frontend_ip_configuration {
+        id                            = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/frontendIPConfigurations/Prm1-load-balancer-frontend"  
+        inbound_nat_rules             = []
+        load_balancer_rules           = []
+        name                          = "Prm1-load-balancer-frontend"
+        outbound_rules                = []
+        private_ip_address_allocation = "Dynamic"
+        public_ip_address_id          = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/publicIPAddresses/Prm1-public-ip"
+    }
+}
+
+# azurerm_lb_backend_address_pool.main:
+resource "azurerm_lb_backend_address_pool" "main" {
+    backend_ip_configurations = []
+    id                        = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/backendAddressPools/backend-adress-pool"
+    inbound_nat_rules         = []
+    load_balancing_rules      = []
+    loadbalancer_id           = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer"
+    name                      = "backend-adress-pool"
+    outbound_rules            = []
+}
+
+# azurerm_linux_virtual_machine.main[0]:
+resource "azurerm_linux_virtual_machine" "main" {
+    admin_password                  = (sensitive value)
+    admin_username                  = (sensitive)
+    allow_extension_operations      = true
+    availability_set_id             = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/availabilitySets/PRM1-AVAILABILITY-SET"
+    capacity_reservation_group_id   = ""
+    computer_name                   = "Prm1-vm0"
+    dedicated_host_group_id         = ""
+    dedicated_host_id               = ""
+    disable_password_authentication = false
+    edge_zone                       = ""
+    encryption_at_host_enabled      = false
+    eviction_policy                 = ""
+    extensions_time_budget          = "PT1H30M"
+    id                              = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/virtualMachines/Prm1-vm0"
+    license_type                    = ""
+    location                        = "southcentralus"
+    max_bid_price                   = -1
+    name                            = "Prm1-vm0"
+    network_interface_ids           = [
+        "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface0",
+    ]
+    patch_mode                      = "ImageDefault"
+    platform_fault_domain           = -1
+    priority                        = "Regular"
+    private_ip_address              = "10.0.2.5"
+    private_ip_addresses            = [
+        "10.0.2.5",
+    ]
+    provision_vm_agent              = true
+    proximity_placement_group_id    = ""
+    public_ip_address               = ""
+    public_ip_addresses             = []
+    resource_group_name             = "Azuredevops"
+    secure_boot_enabled             = false
+    size                            = "Standard_D2s_v3"
+    source_image_id                 = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/ubuntuP1Image"
+    tags                            = {
+        "project" = "udacityP1"
+    }
+    user_data                       = ""
+    virtual_machine_id              = "40b75139-1be0-4fd3-a5d6-45e80ce69d82"
+    virtual_machine_scale_set_id    = ""
+    vtpm_enabled                    = false
+    zone                            = ""
+
+    os_disk {
+        caching                   = "ReadWrite"
+        disk_size_gb              = 30
+        name                      = "Prm1-vm0_disk1_4a5d53594fa44c9ba4baef5318c3d3b0"
+        storage_account_type      = "Standard_LRS"
+        write_accelerator_enabled = false
+    }
+}
+
+# azurerm_linux_virtual_machine.main[1]:
+resource "azurerm_linux_virtual_machine" "main" {
+    admin_password                  = (sensitive value)
+    admin_username                  = (sensitive)
+    allow_extension_operations      = true
+    availability_set_id             = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/availabilitySets/PRM1-AVAILABILITY-SET"
+    capacity_reservation_group_id   = ""
+    computer_name                   = "Prm1-vm1"
+    dedicated_host_group_id         = ""
+    dedicated_host_id               = ""
+    disable_password_authentication = false
+    edge_zone                       = ""
+    encryption_at_host_enabled      = false
+    eviction_policy                 = ""
+    extensions_time_budget          = "PT1H30M"
+    id                              = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/virtualMachines/Prm1-vm1"
+    license_type                    = ""
+    location                        = "southcentralus"
+    max_bid_price                   = -1
+    name                            = "Prm1-vm1"
+    network_interface_ids           = [
+        "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface1",
+    ]
+    patch_mode                      = "ImageDefault"
+    platform_fault_domain           = -1
+    priority                        = "Regular"
+    private_ip_address              = "10.0.2.4"
+    private_ip_addresses            = [
+        "10.0.2.4",
+    ]
+    provision_vm_agent              = true
+    proximity_placement_group_id    = ""
+    public_ip_address               = ""
+    public_ip_addresses             = []
+    resource_group_name             = "Azuredevops"
+    secure_boot_enabled             = false
+    size                            = "Standard_D2s_v3"
+    source_image_id                 = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/ubuntuP1Image"
+    tags                            = {
+        "project" = "udacityP1"
+    }
+    user_data                       = ""
+    virtual_machine_id              = "267aea20-d0dd-4ca6-9ed6-a9d29c086586"
+    virtual_machine_scale_set_id    = ""
+    vtpm_enabled                    = false
+    zone                            = ""
+
+    os_disk {
+        caching                   = "ReadWrite"
+        disk_size_gb              = 30
+        name                      = "Prm1-vm1_disk1_0a9488fb5c8c432597938a44465f40aa"
+        storage_account_type      = "Standard_LRS"
+        write_accelerator_enabled = false
+    }
+}
+
+# azurerm_managed_disk.main[1]:
+resource "azurerm_managed_disk" "main" {
+    create_option                 = "Empty"
+    disk_iops_read_only           = 0
+    disk_iops_read_write          = 500
+    disk_mbps_read_only           = 0
+    disk_mbps_read_write          = 60
+    disk_size_gb                  = 1
+    id                            = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/disks/Prm1-managed-disk-00-1"
+    location                      = "southcentralus"
+    max_shares                    = 0
+    name                          = "Prm1-managed-disk-00-1"
+    on_demand_bursting_enabled    = false
+    public_network_access_enabled = true
+    resource_group_name           = "Azuredevops"
+    storage_account_type          = "Standard_LRS"
+    tags                          = {
+        "project" = "udacityP1"
+    }
+    trusted_launch_enabled        = false
+}
+
+# azurerm_managed_disk.main[0]:
+resource "azurerm_managed_disk" "main" {
+    create_option                 = "Empty"
+    disk_iops_read_only           = 0
+    disk_iops_read_write          = 500
+    disk_mbps_read_only           = 0
+    disk_mbps_read_write          = 60
+    disk_size_gb                  = 1
+    id                            = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/disks/Prm1-managed-disk-00-0"
+    location                      = "southcentralus"
+    max_shares                    = 0
+    name                          = "Prm1-managed-disk-00-0"
+    on_demand_bursting_enabled    = false
+    public_network_access_enabled = true
+    resource_group_name           = "Azuredevops"
+    storage_account_type          = "Standard_LRS"
+    tags                          = {
+        "project" = "udacityP1"
+    }
+    trusted_launch_enabled        = false
+}
+
+# azurerm_network_interface.main[0]:
+resource "azurerm_network_interface" "main" {
+    applied_dns_servers           = []
+    dns_servers                   = []
+    enable_accelerated_networking = false
+    enable_ip_forwarding          = false
+    id                            = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface0"
+    internal_domain_name_suffix   = "tbwztzrzvegunn4vbkjp2vu2wb.jx.internal.cloudapp.net"
+    location                      = "southcentralus"
+    name                          = "Prm1-network-interface0"
+    private_ip_address            = "10.0.2.5"
+    private_ip_addresses          = [
+        "10.0.2.5",
+    ]
+    resource_group_name           = "Azuredevops"
+    tags                          = {
+        "project" = "udacityP1"
+    }
+
+    ip_configuration {
+        name                          = "internal"
+        primary                       = true
+        private_ip_address            = "10.0.2.5"
+        private_ip_address_allocation = "Dynamic"
+        private_ip_address_version    = "IPv4"
+        subnet_id                     = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/virtualNetworks/Prm1-network/subnets/internal"
+    }
+}
+
+# azurerm_network_interface.main[1]:
+resource "azurerm_network_interface" "main" {
+    applied_dns_servers           = []
+    dns_servers                   = []
+    enable_accelerated_networking = false
+    enable_ip_forwarding          = false
+    id                            = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface1"
+    internal_domain_name_suffix   = "tbwztzrzvegunn4vbkjp2vu2wb.jx.internal.cloudapp.net"
+    location                      = "southcentralus"
+    name                          = "Prm1-network-interface1"
+    private_ip_address            = "10.0.2.4"
+    private_ip_addresses          = [
+        "10.0.2.4",
+    ]
+    resource_group_name           = "Azuredevops"
+    tags                          = {
+        "project" = "udacityP1"
+    }
+
+    ip_configuration {
+        name                          = "internal"
+        primary                       = true
+        private_ip_address            = "10.0.2.4"
+        private_ip_address_allocation = "Dynamic"
+        private_ip_address_version    = "IPv4"
+        subnet_id                     = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/virtualNetworks/Prm1-network/subnets/internal"
+    }
+}
+
+# azurerm_network_interface_backend_address_pool_association.main[0]:
+resource "azurerm_network_interface_backend_address_pool_association" "main" {
+    backend_address_pool_id = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/backendAddressPools/backend-adress-pool"
+    id                      = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface0/ipConfigurations/internal|/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/backendAddressPools/backend-adress-pool"
+    ip_configuration_name   = "internal"
+    network_interface_id    = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface0"
+}
+
+# azurerm_network_interface_backend_address_pool_association.main[1]:
+resource "azurerm_network_interface_backend_address_pool_association" "main" {
+    backend_address_pool_id = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/backendAddressPools/backend-adress-pool"
+    id                      = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface1/ipConfigurations/internal|/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/loadBalancers/Prm1-load-balancer/backendAddressPools/backend-adress-pool"
+    ip_configuration_name   = "internal"
+    network_interface_id    = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkInterfaces/Prm1-network-interface1"
+}
+
+# azurerm_network_security_group.main:
+resource "azurerm_network_security_group" "main" {
+    id                  = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkSecurityGroups/Prm1-security-group"
+    location            = "southcentralus"
+    name                = "Prm1-security-group"
+    resource_group_name = "Azuredevops"
+    security_rule       = []
+    tags                = {
+        "project" = "udacityP1"
+    }
+}
+
+# azurerm_network_security_rule.rule1:
+resource "azurerm_network_security_rule" "rule1" {
+    access                      = "Allow"
+    description                 = "description-ssh"
+    destination_address_prefix  = "*"
+    destination_port_range      = "22"
+    direction                   = "Inbound"
+    id                          = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkSecurityGroups/Prm1-security-group/securityRules/inboundAccessSSH"
+    name                        = "inboundAccessSSH"
+    network_security_group_name = "Prm1-security-group"
+    priority                    = 100
+    protocol                    = "Tcp"
+    resource_group_name         = "Azuredevops"
+    source_address_prefix       = "10.0.0.0/24"
+    source_port_range           = "*"
+}
+
+# azurerm_network_security_rule.rule2:
+resource "azurerm_network_security_rule" "rule2" {
+    access                      = "Deny"
+    destination_address_prefix  = "10.0.0.0/24"
+    destination_port_range      = "*"
+    direction                   = "Inbound"
+    id                          = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/networkSecurityGroups/Prm1-security-group/securityRules/DenyAllInbound"
+    name                        = "DenyAllInbound"
+    network_security_group_name = "Prm1-security-group"
+    priority                    = 300
+    protocol                    = "*"
+    resource_group_name         = "Azuredevops"
+    source_address_prefix       = "*"
+    source_port_range           = "*"
+}
+
+# azurerm_public_ip.main:
+resource "azurerm_public_ip" "main" {
+    allocation_method       = "Dynamic"
+    id                      = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/publicIPAddresses/Prm1-public-ip"
+    idle_timeout_in_minutes = 4
+    ip_version              = "IPv4"
+    location                = "southcentralus"
+    name                    = "Prm1-public-ip"
+    resource_group_name     = "Azuredevops"
+    sku                     = "Basic"
+    sku_tier                = "Regional"
+    tags                    = {
+        "project" = "udacityP1"
+    }
+}
+
+# azurerm_subnet.internal:
+resource "azurerm_subnet" "internal" {
+    address_prefixes                               = [
+        "10.0.2.0/24",
+    ]
+    enforce_private_link_endpoint_network_policies = false
+    enforce_private_link_service_network_policies  = false
+    id                                             = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/virtualNetworks/Prm1-network/subnets/internal"
+    name                                           = "internal"
+    private_endpoint_network_policies_enabled      = true
+    private_link_service_network_policies_enabled  = true
+    resource_group_name                            = "Azuredevops"
+    virtual_network_name                           = "Prm1-network"
+}
+
+# azurerm_virtual_network.main:
+resource "azurerm_virtual_network" "main" {
+    address_space           = [
+        "10.0.0.0/22",
+    ]
+    dns_servers             = []
+    flow_timeout_in_minutes = 0
+    guid                    = "e6996d98-a939-460d-b7d5-0a92fe569cb1"
+    id                      = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Network/virtualNetworks/Prm1-network"
+    location                = "southcentralus"
+    name                    = "Prm1-network"
+    resource_group_name     = "Azuredevops"
+    subnet                  = []
+    tags                    = {
+        "project" = "udacityP1"
+    }
+}
+
+# data.azurerm_image.main:
+data "azurerm_image" "main" {
+    data_disk           = []
+    id                  = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/images/ubuntuP1Image"
+    location            = "southcentralus"
+    name                = "ubuntuP1Image"
+    os_disk             = [
+        {
+            blob_uri        = ""
+            caching         = "ReadWrite"
+            managed_disk_id = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops/providers/Microsoft.Compute/disks/pkrosj5ylw5dwu7"
+            os_state        = "Generalized"
+            os_type         = "Linux"
+            size_gb         = 30
+        },
+    ]
+    resource_group_name = "Azuredevops"
+    sort_descending     = false
+    tags                = {
+        "project" = "udacityP1"
+    }
+    zone_resilient      = false
+}
+
+# data.azurerm_resource_group.main:
+data "azurerm_resource_group" "main" {
+    id       = "/subscriptions/e2c7cd99-c3c5-4a90-9109-02e7d50f8311/resourceGroups/Azuredevops"
+    location = "southcentralus"
+    name     = "Azuredevops"
+    tags     = {
+        "DeploymentId" = "204073"
+        "LaunchId"     = "1346"
+        "LaunchType"   = "ON_DEMAND_LAB"
+        "TemplateId"   = "1181"
+        "TenantId"     = "none"
+    }
+}
+huba@DESKTOP-1PSGD3C:/mnt/d/dev/devops/course1lab1/repository/Azure_Deploy_WebServer$
