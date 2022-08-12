@@ -17,9 +17,7 @@ resource "azurerm_virtual_network" "main" {
     address_space           = ["10.0.0.0/22"]
     location                = data.azurerm_resource_group.main.location
     resource_group_name     = data.azurerm_resource_group.main.name
-    tags = {
-        project: "udacityP1"
-    }
+    tags                    = var.tags
 }
 
 // Internal subnet for the upper vnet
@@ -35,9 +33,7 @@ resource "azurerm_network_security_group" "main" {
     name                    = "${var.prefix}-security-group"
     location                = data.azurerm_resource_group.main.location
     resource_group_name     = data.azurerm_resource_group.main.name
-    tags = {
-        project: "udacityP1"
-    }
+    tags                    = var.tags
 }
 
 // Allow only acces to VMs on the same subnet
@@ -82,9 +78,7 @@ resource "azurerm_network_interface" "main" {
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
     }  
-    tags = {
-        project: "udacityP1"
-    }  
+    tags                          = var.tags
 }
 
 // Public IP
@@ -94,9 +88,7 @@ resource "azurerm_public_ip" "main" {
     resource_group_name = data.azurerm_resource_group.main.name
     allocation_method   = "Dynamic"
     sku                 = "Basic" 
-    tags = {
-        project: "udacityP1"
-    }
+    tags                = var.tags
 }
 
 // Load balancer
@@ -110,9 +102,7 @@ resource "azurerm_lb" "main" {
         public_ip_address_id = azurerm_public_ip.main.id
     }
 
-    tags = {
-        project: "udacityP1"
-    }
+    tags                     = var.tags
 }
 
 // Load balancer backend address pool
@@ -135,9 +125,7 @@ resource "azurerm_availability_set" "main" {
     location            = data.azurerm_resource_group.main.location
     resource_group_name = data.azurerm_resource_group.main.name
 
-    tags = {
-        project: "udacityP1"
-    }
+    tags                = var.tags
 }
 
 // Creation of virtual machines
@@ -163,9 +151,7 @@ resource "azurerm_linux_virtual_machine" "main" {
         caching              = "ReadWrite"
     }
 
-    tags = {
-        project: "udacityP1"
-    }
+    tags                     = var.tags
 
     source_image_id = data.azurerm_image.main.id
 }
@@ -180,7 +166,5 @@ resource "azurerm_managed_disk" "main" {
     create_option        = "Empty"
     disk_size_gb         = "1"
 
-    tags = {
-        project: "udacityP1"
-    }
+    tags                 = var.tags
 }

@@ -45,3 +45,7 @@ variable "subscription_id" {
     description = "Azure subscription id"
     default = "TODO-U-FILL-IT"
 }
+
+variable "tags" {
+    project = "udacityP1"
+}
