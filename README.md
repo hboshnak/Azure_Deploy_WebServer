@@ -26,6 +26,7 @@ The original starter template of this project lives at this [repository](https:/
 ```bash
 az login
 ```
+ - delete ```terraform.tfstate``` , ```solution.plan``` , ```.terraform.lock.hcl``` artifacts from previous builds
 
 ### 1. Deploy a Policy
 
